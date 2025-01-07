@@ -7,6 +7,7 @@ import lottie from 'lottie-web';
 
 apex.debug.info('app-lottie.js is loaded.');
 
+console.log('lottie-web is loaded.');
 
 /* 発生したイベントを表示するページ・アイテム */
 const eventItem = apex.item("P2_EVENT");
