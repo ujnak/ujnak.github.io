@@ -25,8 +25,11 @@ controls.add([
                 },
                 {
                     success: (data) => {
-                        // この例では、dataとして受け取るのは{ success: true }のみ
-                        channel.postMessage({ type: "refresh", data: data });
+                        /*
+                        * 属性reportとして、リフレッシュ対象のレポートの静的IDが返される。
+                        * 返されたレポートの静的IDは、そのままイベントに渡す。
+                        */
+                        channel.postMessage({ type: "refresh", target: data });
                     }
                 }
             );
@@ -40,9 +43,9 @@ controls.add([
                 {},
                 {
                     success: (data) => {
-                        // clearでも、dataとして受け取るのは{ success: true }のみ
-                        channel.postMessage({ type: "refresh", data: data });
-                        // ページ・アイテムP1_ENAMEをクリアする
+                        // CLEARもSERCHと同様、Ajaxコールバックのレスポンスをそのまま渡す。
+                        channel.postMessage({ type: "refresh", target: data });
+                        // ページ・アイテムP1_ENAMEをクリアする。
                         apex.item("P1_ENAME").setValue(null);
                     }
                 }
