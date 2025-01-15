@@ -37,6 +37,8 @@ controls.add([
                     success: (data) => {
                         // clearでも、dataとして受け取るのは{ success: true }のみ
                         channel.postMessage({ type: "refresh", data: data });
+                        // ページ・アイテムP1_ENAMEをクリアする
+                        apex.item("P1_ENAME").setValue(null);
                     }
                 }
             );
