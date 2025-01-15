@@ -43,5 +43,31 @@ controls.add([
                 }
             );
         }
+    },
+    /*
+    * OPENについては、APEXアクションを使って定義する必要はない。
+    *
+    * ボタンのプロパティの動作のアクションに、このページにリダイレクトを選択し、
+    * 宛先のターゲットとなるページを設定すれば、そのページがダイアログであれば、
+    * 以下と同じ処理が行われ、ページの設定に従ったダイアログが開かれる。
+    * 
+    * APEX_PAGE.GET_URLのターゲットがダイアログのときに、内部的にどのように
+    * 処理されるのかを理解するために、この例を含めている。
+    */
+    {
+        name: "OPEN",
+        action: (event, element, args) => {
+            apex.server.process(
+                "GET_URL",
+                {},
+                {
+                    success: (data) => {
+                        const url = data.url;
+                        apex.debug.info("url: ", url);
+                        eval(url);
+                    }
+                }
+            );
+        }
     }
 ]);
