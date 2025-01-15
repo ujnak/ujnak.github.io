@@ -57,6 +57,7 @@ channel.addEventListener("message", (event) => {
       {
         success: (data) => {
           apex.debug.info(data);
+          channel.postMessage( { type: "status", message: data.message } );
         }
       }
     )

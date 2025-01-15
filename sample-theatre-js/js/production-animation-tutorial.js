@@ -59,6 +59,14 @@ async function restoreProjectState( projectId ) {
 */
 const channel = new BroadcastChannel('control-theatre');
 
+// エクスポートの成功をP1_STATUSに表示する。
+channel.addEventListener("message", (event) => {
+  apex.debug.info("status: ", event);
+  if ( event.data.type === 'status' ) {
+    apex.item("P1_STATUS").setValue(event.data.message);
+  }
+});
+
 const controlElement = document.getElementById("CONTROLS");
 const controls = apex.actions.createContext("controls", controlElement);
 
@@ -71,10 +79,19 @@ controls.add([
     }
   },
   {
+    // ページをリロードしてアニメーションを初期化する。
+    name: "RELOAD",
+    action: (event, element, args) => {
+      window.location.reload();
+      apex.item("P1_STATUS").setValue(null);
+    }
+  },
+  {
     // IMPORTはこのページで処理する。
     name: "IMPORT",
     action: (event, element, args) => {
       restoreProjectState( projectId );
+      apex.item("P1_STATUS").setValue("projectState is restored.");
     }
   }
 ]);
