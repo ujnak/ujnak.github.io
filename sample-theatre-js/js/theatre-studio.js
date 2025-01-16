@@ -34,7 +34,7 @@ apex.server.process(
       * 取り出す。DBから取り出したprojectStateを与えると、Studioは
       * ブラウザとディスクのデータでConflictがあると報告する。
       * ブラウザとディスクのどちらを使うか選択できるので、DBのデータを使う場合は
-      * ブラウザ、localStorageを使う場合はディスクを選択する。
+      * ディスク、localStorageを使う場合はブラウザを選択する。
       */
       apex.debug.info("initial projectStage: ", projectState);
       const r = prepareProject(core, projectId, projectState);
