@@ -14,15 +14,37 @@ const projectId = apex.item("P2_PROJECT_ID").getValue();
 apex.debug.info("projectId: ", projectId);
 
 /*
-* Theatre.jsのStudioを使用する。
+* データベースに保存されているアニメーションを取り出して、
+* それでStudioを初期化する。
 */
-studio.initialize(); // Start the Theatre.js UI
-
-/*
-* アニメーションはブラウザのlocalStorageから取り出すので、project自体は
-* 参照することがない。
-*/
-const r = prepareProject(core, projectId, null);
+apex.server.process(
+  "RESTORE_PROJECT_STATE",
+  {
+    pageItems: "#P2_PROJECT_ID"
+  },
+  {
+    success: (data) => {
+      const projectState = JSON.parse(data.state);
+      /*
+      * Theatre.jsのStudioを開始する。
+      */
+      studio.initialize(); // Start the Theatre.js UI
+      /*
+      * Theatre.jsのStudioの起動時は、アニメーションのデータをlocalStorageから
+      * 取り出す。DBから取り出したprojectStateを与えると、Studioは
+      * ブラウザとディスクのデータでConflictがあると報告する。
+      * ブラウザとディスクのどちらを使うか選択できるので、DBのデータを使う場合は
+      * ブラウザ、localStorageを使う場合はディスクを選択する。
+      */
+      apex.debug.info("initial projectStage: ", projectState);
+      const r = prepareProject(core, projectId, projectState);
+      /*
+      * アニメーションはブラウザのlocalStorageから取り出すので、project自体は
+      * 初期化以後、参照することがない。
+      */
+    }
+  }
+)
 
 /*
 * BroadcastChannelからイベントを受け取って、アニメーションをエクスポートする。
