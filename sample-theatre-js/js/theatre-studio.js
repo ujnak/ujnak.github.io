@@ -1,32 +1,28 @@
 import 'https://cdn.jsdelivr.net/npm/@theatre/browser-bundles@0.7.2/dist/core-and-studio.js';
+/*
+* プロジェクトはプロダクションのページと共有するため、別ページにファンクションとして
+* 定義する。
+*/
+import prepareProject from './project.js';
 // We can now access Theatre.core and Theatre.studio from here
 const { core, studio } = Theatre;
 
+/*
+* プロジェクトIDは、アプリケーション・アイテムG_PROJECT_IDに定義されている。
+*/
 const projectId = apex.item("P2_PROJECT_ID").getValue();
 apex.debug.info("projectId: ", projectId);
 
 /*
-* Theatre.jsのStudioを使用するための処理。
-* 
-* 以下のGetting StartedのWith HTML/SVGのコードそのままです。
-* https://www.theatrejs.com/docs/latest/getting-started/with-html-svg
+* Theatre.jsのStudioを使用する。
 */
 studio.initialize(); // Start the Theatre.js UI
 
-const project = core.getProject(projectId);
-
-const sheet = project.sheet('Sheet 1')
-const obj = sheet.object('Heading 1', {
-  y: 0, // you can use just a simple default value
-  opacity: core.types.number(1, { range: [0, 1] }), // or use a type constructor to customize
-});
-
-const articleHeadingElement = document.getElementById('article-heading');
-
-obj.onValuesChange((obj) => {
-  articleHeadingElement.style.transform = `translateY(${obj.y}px)`
-  articleHeadingElement.style.opacity = obj.opacity
-});
+/*
+* アニメーションはブラウザのlocalStorageから取り出すので、project自体は
+* 参照することがない。
+*/
+const r = prepareProject(core, projectId, null);
 
 /*
 * BroadcastChannelからイベントを受け取って、アニメーションをエクスポートする。
