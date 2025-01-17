@@ -59,7 +59,7 @@ controls.add([
     * 宛先のターゲットとなるページを設定すれば、以下と同様の処理が行われます。
     * 
     * APEX_PAGE.GET_URLのターゲットが標準ページとダイアログで、返されるURLが
-    * 異なることを示すために、この例を含めています。
+    * 異なることを示すために、この例を含めている。
     */
     {
         name: "OPEN",
@@ -74,15 +74,15 @@ controls.add([
                         if ( url.startsWith("javascript:") ) {
                             /*
                             * URLがjavascript:で始まる場合、ダイアログとしてページを開く。
-                            * URLはJavaScriptとしてそのまま実行する。
+                            * URLはJavaScriptとして実行される。
                             */
-                            eval(url);
+                            apex.navigation.redirect(url);
                         }
                         else
                         {
                             /*
                             * URLがjavascript:で始まらない標準ページは、新しいウィンドウで開く。
-                            * ウィンドウのハンドルを取得するために、noopener: falseを指定する。
+                            * ウィンドウのハンドラを取得するために、noopener: falseを指定する。
                             */                         
                             reportWindow = apex.navigation.openInNewWindow(url, "_blank", { noopener: false });
                             apex.debug.info("reportWindow: ", reportWindow);
